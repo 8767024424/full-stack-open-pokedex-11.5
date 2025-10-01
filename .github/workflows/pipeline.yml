@@ -1,0 +1,33 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main # or 'master', depending on your default branch name
+  pull_request:
+    branches: [ main ]
+    types: [ opened, synchronize ]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Set up job (Automatic)
+      - name: Set up job
+        uses: actions/checkout@v4 # Action to check out the repository code
+
+      # Step 2: Run actions/setup-node@v4
+      - name: Run actions/setup-node@v4
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Specify a node version
+
+      # Step 3: npm install
+      - name: npm install
+        run: npm install
+
+      # Step 4: lint (The step that failed in your screenshot)
+      - name: lint
+        run: npm run lint # Runs the 'lint' script defined in your package.json
+
+      # Step 5: Complete job (Automatic)
